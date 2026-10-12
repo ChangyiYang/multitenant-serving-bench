@@ -1,0 +1,13 @@
+--- a/python/sglang/benchmark/serving.py
++++ b/python/sglang/benchmark/serving.py
+@@ -1564,6 +1564,10 @@
+         lora_idx = 0
+     elif lora_request_distribution == "skewed":
+         weights = np.array([lora_zipf_alpha**-i for i in range(len(lora_names))])
++        # Local patch (lorabench): LORA_TRUE_ZIPF=<s> switches to standard Zipf p(rank) ~ rank^-s,
++        # matching --gsp-group-distribution zipf so SP and LoRA see the same tenant popularity.
++        if os.environ.get("LORA_TRUE_ZIPF"):
++            weights = np.arange(1, len(lora_names) + 1, dtype=float) ** -float(os.environ["LORA_TRUE_ZIPF"])
+         lora_probs = weights / np.sum(weights)
+     else:
+         lora_idx = None
