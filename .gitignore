@@ -3,3 +3,6 @@ adapters_r16/
 mooncake_trace.jsonl
 *.log
 __pycache__/
+spec/assets.env
+spec/qwen3-8b-areal-sp256*/
+spec/results/server_*.log
